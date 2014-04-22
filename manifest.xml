@@ -1,0 +1,17 @@
+<package>
+  <description brief="jsk_2014_04_pr2_73b2">
+
+     jsk_2014_04_pr2_73b2
+
+  </description>
+  <author>h-kamada</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/jsk_2014_04_pr2_73b2</url>
+  <depend package="pr2eus"/>
+  <depend package="jsk_perception"/>
+  <depend package="jsk_demo_common"/>
+
+</package>
+
+
