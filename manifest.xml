@@ -11,6 +11,7 @@
   <depend package="pr2eus"/>
   <depend package="jsk_perception"/>
   <depend package="jsk_demo_common"/>
+  <depend package="jsk_gui_msgs" />
 
 </package>
 
