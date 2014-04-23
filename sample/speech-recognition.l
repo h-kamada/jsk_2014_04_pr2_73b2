@@ -5,7 +5,7 @@
 
 (defun callback (msg)
   (let ((candidate-list (send msg :texts)))
-    (format t "received message: ~A~%" candidatelist)
+    (format t "received message: ~A~%" candidate-list)
     (when (find-if #'(lambda (candidate) (substringp "こんにちは" candidate)) candidate-list)
       (ros::ros-info "Hello, JSK!"))))
 
@@ -17,4 +17,10 @@
    (ros::spin-once)
    (ros::sleep)))
 
+(defun usage ()
+  (ros::ros-info "1. open chrome web browser.")
+  (ros::ros-info "2. access http://pr1040.jsk.imi.i.u-tokyo.ac.jp:8000/rwt_voice_message/")
+  (ros::ros-info "3. Enjoy speaking!!!"))
+
+(usage)
 (main)
