@@ -1,0 +1,14 @@
+(send *ri* :state :potentio-vector)
+#f(30.1983 -24.8572 25.937 1.26296 -112.674 189.899 -83.6989 -7.19352 -59.5161 74.2514 -69.9059 -119.202 -20.0044 -29.9991 180.0 -19.1521 70.722)
+
+o:larm-collar-y :larm-shoulder-p :larm-shoulder-r :larm-elbow-p :larm-elbow-r :larm-wrist-p :larm-wrist-r
+
+
+
+;;pr2-angle-vector
+#f(50.0 10.0 20.0 30.0 -40.0 50.0 -60.0 70.0 -60.0 74.0 -70.0 -120.0 -20.0 -30.0 180.0 0.0 0.0)
+(1:torso-waist-z  2:larm-collar-y 3:larm-shoulder-p 4:larm-shoulder-r 5:larm-elbow-p 6:larm-elbow-r 7:larm-wrist-p 8:larm-wrist-r 9:rarm-collar-y 10:rarm-shoulder-p 11:rarm-shoulder-r 12:rarm-elbow-p 13:rarm-elbow-r 14:rarm-wrist-p 15:rarm-wrist-r 16:head-neck-y 17:head-neck-p
+
+
+
+l_shoulder_pan_link  l_shoulder_lift_link l_upper_arm_roll_link  l_elbow_flex_link l__forearm_roll_link   l_wrist_flex_link  l_wrist_roll_link
