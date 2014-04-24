@@ -1,33 +1,33 @@
 #!/usr/bin/env roseus
-;;(ros::load-ros-manifest "roseus_tutorials")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; about: pr2 detecting someone's face 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (ros::load-ros-manifest "face_detector_mono")
-;;;
+(ros::roseus "face_detect")
 
-;;;
-;;;
-(ros::roseus "listener")
-;;(setq sys::*gc-hook* #'(lambda (a b) (format t ";; gc ~A ~A~%" a b)))
-
-;; callback function
-;(defun string-cb (msg) (print (list 'cb (sys::thread-self) (send msg :data))))
-;(ros::subscribe "chatter" std_msgs::string #'string-cb)
-
-; lambda function
-;(ros::subscribe "chatter" std_msgs::string
-;                #'(lambda (msg) (ros::rosinfo 
-;                                 (format nil "I heard ~A" (send msg :data)))))
-
-;; method call
 (defclass string-cb-class
   :super propertied-object
   :slots ())
 (defmethod string-cb-class
   (:init () (ros::subscribe "/openni/rgb/face_detector_mono/faces" face_detector_mono::RectArray #'send self :string-cb))
-  (:string-cb (msg) (if (atom (send msg :rects)) (speak-jp "ありがとう")))) 
+  (:string-cb (msg) 
+(progn
+(setq evaluation_value nil)	     
+(if (eql (atom (send msg :rects)) nil) (setq evaluation_value t))
+(if (eql evaluation_value t) (progn (speak-jp "ごみぶくろをいれてくれ　あとはまかせた")
+				    (setq evaluation_value nil)))
+
+)))
+
+	      
+
 (setq m (instance string-cb-class :init))
 
 (do-until-key
  (ros::spin-once)
- ;;(sys::gc)
 )
-;(ros::spin)
+
+
+;;(注)　顔認識されると　atom (send msg :rects) はnilを返す　それ以外はt
