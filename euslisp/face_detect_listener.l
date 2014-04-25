@@ -1,7 +1,8 @@
 #!/usr/bin/env roseus
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; about: pr2 detecting someone's face                                          
+;;
+;; about: pr2 detecting someone's face                                         ;; 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -9,6 +10,10 @@
 (ros::roseus "face_detect")
 
 (require :pr2-interface "package://pr2eus/pr2-interface.l")
+(load "package://jsk_demo_common/pr2-move.l")
+;;?????これで本当にうまく移動するのか????????;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(send *ri* :move-to (send *scene* :spot "/eng2/7f/room73B2-beside-chair"))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defclass string-cb-class
   :super propertied-object

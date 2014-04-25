@@ -7,6 +7,12 @@
 (ros::roseus "fetch_gomibukuro")
 (ros::load-ros-manifest "fetch_trashbag_demo")
 (require :pr2-interface "package://pr2eus/pr2-interface.l")
+(load "package://jsk_common_demo/pr2-move.l")
+
+;;????????これでうまく移動するのか????????;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(send *ri* :move-to (send *scene* :spot "eng2/7f/room73B2-trashbox-front"))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 (send *pr2* :reset-pose)
 (send *ri* :angle-vector (send *pr2* :angle-vector) 3000)
