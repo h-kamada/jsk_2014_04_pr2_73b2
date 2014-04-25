@@ -1,6 +1,6 @@
 (load "package://pr2eus/pr2-interface.l")
 (load "package://pr2eus/speak.l")
-(ros::roseus "au_one_week_pro")
+;(load "package://jsk_2014_02_pr2_73b2/euslisp/receive_garbage.l")
 
 (pr2)
 (when (not (boundp '*irtviewer*))
