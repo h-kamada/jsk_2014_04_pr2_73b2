@@ -25,10 +25,7 @@
 (setq evaluation_value nil)
 (if (eql (atom (send msg :rects)) nil) (setq evaluation_value t))(if (eql evaluation_value t) (progn (speak-jp "ごみぶくろをいれてくれ　あとはまかせた")
                                     (setq evaluation_value nil)))
-
 )))
-
-
 
 (setq m (instance string-cb-class :init))
 
@@ -38,4 +35,4 @@
 
 
 ;;(注)　顔認識されると　atom (send msg :rects) はnilを返す　それ以外はt
-
+;;(注)　atomはconsのinstanceである時のみnilを返す つまり値が得られた時だけnilを返す

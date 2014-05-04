@@ -2,9 +2,9 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;about: pr2 giving someone trashbag                                                                   
-;;when pr2 feels her left shoulder is pushed,                                                                              
+;;when pr2 feels her left shoulder is pushed,                                                                            
 ;;she opens her left hand and says "yorosiku" 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                                                                                                ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (ros::load-ros-manifest "give_someone_something")
 (ros::roseus "give_someone_something")
@@ -22,9 +22,9 @@
 ;;左肩の値
 
 
-                     (if (> effort 2.0)                                      
-                         (progn                                               
-                           (send *ri* :stop-grasp :arms)                      
+                     (if  (> (abs effort) 1.2)                                      
+                         (progn                                              ;; 
+                        
 			   (send *ri* :wait-interpolation)                    
 			   (send *pr2* :torso :waist-z :joint-angle 50)
 			   (send *pr2* :larm :collar-y :joint-angle 46.6521)
@@ -34,12 +34,20 @@
 			   (send *pr2* :larm :elbow-r :joint-angle 6.83664)
 			   (send *pr2* :larm :wrist-p :joint-angle -22.2449)
 			   (send *pr2* :larm :wrist-r :joint-angle 178.785)
+			   (send *pr2* :head :neck-p :joint-angle -10)
 			   (send *ri* :angle-vector (send *pr2* :angle-vector) 5000)
 			   (send *ri* :wait-interpolation)
+			   (unix:sleep 2)
+
+			   (send *ri* :stop-grasp :arms)
+			   (unix:sleep 4)
 			   (speak-jp "よろしくね")
+			   
 			   (send *pr2* :reset-pose)
-			   (send *ri* :angle-vector (send *pr2* :angle-vector))
-                           )))))                                              
+			   (send *ri* :angle-vector (send *pr2* :angle-vector)3000)
+                           )))))                                             
+
+
 
 (setq m (instance string-cb-class :init))
 (do-until-key

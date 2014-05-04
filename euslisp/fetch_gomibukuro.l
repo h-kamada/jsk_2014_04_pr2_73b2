@@ -34,5 +34,5 @@
 (send *ri* :angle-vector (send *pr2* :angle-vector ) 3000)
 (send *ri* :wait-interpolation)
 
-(send *ri* :start-grasp)
+(send *ri* :start-grasp :gain 0.1)
 (send *ri* :wait-interpolation)
