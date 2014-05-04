@@ -6,12 +6,15 @@
 ;;                 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(ros::load-ros-manifest "find_trashbag")
+(ros::load-ros-manifest "jsk_2014_04_pr2_73b2")
 (ros::roseus "find_trashbag")
 
 
 (require :pr2-interface "package://pr2eus/pr2-interface.l")
 (load "package://jsk_perception/euslisp/detection_interface.l")
+
+(if (not (boundp '*ri*))
+    (pr2-init))
 
 (defun find_gomibukuro (&optional (root-frame-id "/base_footprint") 
 				  (desired-marker-cds 
