@@ -2,9 +2,10 @@
 (load "package://pr2eus/pr2-interface.l")
 (load "package://jsk_demo_common/euslisp/pr2-move.l")
 (setq *room* (room73b2))
-
 (pr2)
+(setq *ri* (instance pr2-interface :init :move-base-action-base "elevator_move_base_simple"))
 (pr2-init)
+
 (objects (list *pr2* *room*))
 (send *irtviewer* :look-all 
       (geo::make-bounding-box
@@ -16,11 +17,13 @@
 (send *ri* :angle-vector (send *pr2* :angle-vector) 2000)
 (send *ri* :wait-interpolation)
 
-(send *pr2* :move-to (send *room* :spot "cook-spot") :world)
+
+;(send *pr2* :move-to (send *room* :spot "cook-spot") :world)
 ;(send *ri* :go-pos 0 -0.04 0) 
 ;(send *pr2* :translate (float-vector -300 0 0))
 ;(send *pr2* :translate #f(200 0 0))
-;(move-to-spot "/eng2/7f/room73B2-trashbox-front" :clear-costmap nil)
+(move-to-spot "/eng2/7f/room73B2-trashbox-front" :clear-costmap nil)
+;(move-to-spot "/eng2/1f/elevator_call_panel_front" :clear-costmap nil)
 ;(send *pr2* :arms :shoulder-p :joint-angle 30)
 ;(send *pr2* :rarm :move-end-pos #f(0 170 40) :world :rotation-axis nil)
 ;(send *ri* :wait-interpolation)
@@ -48,4 +51,8 @@
 (send *ri* :angle-vector (send *pr2* :angle-vector) 2000)
 (send *ri* :wait-interpolation)
 
-(send *ri* :go-pos -0.4 0 0) 
+(send *ri* :go-pos -0.04 0 0)
+
+(send *pr2* :reset-pose)
+(send *ri* :angle-vector (send *pr2* :angle-vector) 2000)
+(send *ri* :wait-interpolation)
