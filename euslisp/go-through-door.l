@@ -8,13 +8,14 @@
 
 (warn ";; go-through-73b2-door")
 ;; relative pose of marker on "/eng2/7f/room73B2-door-front" assumed that #<coordinates #Xcfa9190  499.571 -223.306 1245.997 / 2.559 -1.539 -2.643>
-(defun go-through-73b2-door (&optional (root-frame-id "/base_footprint")
-                                       (tuckarm t)
-                                       (desired-marker-cds
-                                        (make-coords :pos #f(500 -577 1246)
-                                                     :rpy (list 2.659 -1.539 -2.643))))
+(defun go-through-73b2-door (&key (root-frame-id "/base_footprint")
+                                  (tuckarm t)
+                                  (door-front-spot "/eng2/7f/room73B2-door-front")
+                                  (desired-marker-cds
+                                   (make-coords :pos #f(500 -577 1246)
+                                                :rpy (list 2.659 -1.539 -2.643))))
 
-  (move-to-spot "/eng2/7f/room73B2-door-front"
+  (move-to-spot door-front-spot
                 :clear-costmap t
                 :tilt-enable (not tuckarm))
   (let ((speakp t)
@@ -43,3 +44,5 @@
     (send *ri* :angle-vector prev-pr2-av)
     (send *ri* :wait-interpolation)
     ))
+
+(provide :go-throuth-door)
