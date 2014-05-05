@@ -1,0 +1,14 @@
+<launch>
+  <arg name="launch_rviz" default="false" />
+  <include file="$(find elevator_move_base_eng2)/launch/elevator_move_base_eng2.launch" />
+  <include file="$(find jsk_2014_04_pr2_73b2)/launch/detect_73b2_door_checkerboard.launch" />
+
+  <node name="jsk_2014_04_pr2_72b2_demo"
+        pkg="roseus" type="roseus"
+        args="$(find jsk_2014_04_pr2_73b2)/euslisp/demo.l &quot;(progn (setup) (unix:sleep 2) (demo) (ros::exit) (exit))&quot;" />
+
+  <group if="$(arg launch_rviz)">
+    <node name="rviz" pkg="rviz" type="rviz"
+          args="/move_base_simple/goal:=/elevator_move_base_simple/goal"/>
+  </group>
+</launch>
