@@ -21,11 +21,7 @@
 
 (load "package://jsk_2014_04_pr2_73b2/euslisp/find_trashbag.l")
 (find_gomibukuro)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;全部無限ループっぽいのだけど、face_detect_listener.lでとまりそう・・・;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;(load "package://jsk_2014_04_pr2_73b2/euslisp/face_detect_listener.l")
-;(load "package://jsk_2014_04_pr2_73b2/euslisp/give_someone_trashbag.l")
-;(load "package://jsk_2014_04_pr2_73b2/euslisp/interaction_demo.l")
+(send *ri* :go-pos-unsafe 0 0 90) ;;撮影用に回転する
 (defclass string-cb-class
   :super propertied-object
   :slots())
