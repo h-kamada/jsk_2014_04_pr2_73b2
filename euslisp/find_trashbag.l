@@ -9,8 +9,8 @@
 (ros::load-ros-manifest "jsk_2014_04_pr2_73b2")
 (ros::roseus "find_trashbag")
 
-
 (require :pr2-interface "package://pr2eus/pr2-interface.l")
+(pr2-init)
 (load "package://jsk_perception/euslisp/detection_interface.l")
 
 (if (not (boundp '*ri*))
@@ -38,13 +38,13 @@
     
     (send *pr2* :angle-vector (send *ri* :state :potentio-vector))
     (send *pr2* :reset-pose)
-    (send *pr2* :head :neck-p :joint-angle 30)
+    (send *pr2* :head :neck-p :joint-angle 40)
     (send *ri* :angle-vector (send *pr2* :angle-vector) 3000)
 
     ;(dotimes  (i 10)
     (let ((cds (check-detection 
 		:speak-name "ごみぶくろ" 
-		:timeout 30
+		:timeout 30   
 		:speak speakp
 		:detection-topic "/checkerdetector/ObjectDetection"))  
 
@@ -102,8 +102,8 @@
       
 
       (send *pr2* :inverse-kinematics 
-	    ;;(send (copy-object cds) :translate #f(-500 -400 -10000) :world) ;;cdsのx y zの値はどう取り出すのか
-	    (copy-object cds)
+	    (send (copy-object cds) :translate #f(-400 100 -100) :world) ;;cdsのx y zの値はどう取り出すのか
+	    ;;(copy-object cds)
 	    :rotation-axis nil
 	    :use-torso t
 	    :move-arm :larm 
@@ -120,18 +120,18 @@
 
       (send *ri* :wait-interpolation)
 
+      (send *pr2* :reset-pose)
+
+      (send *ri* :angle-vector (send *pr2* :angle-vector))
+
       (load "models/arrow-object.l")
 
       (setq ar (arrow))
 
       (send ar :move-to (send cds :copy-worldcoords) :world)
       
-      (send ar :move-to cds :world)
-      
-      
-
-
-
+      ;;(send ar :move-to cds :world) 
+     
       (objects (list ar *pr2*))
 
       
