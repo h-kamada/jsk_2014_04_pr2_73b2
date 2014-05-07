@@ -13,6 +13,7 @@
   <depend package="jsk_demo_common"/>
   <depend package="jsk_gui_msgs" /> 
   <depend package="sensor_msgs" />
+  <depend package="geometry_msgs" />
   <depend package="opencv2" />
   <depend package="cv_bridge" />
   <depend package="roscpp" />
