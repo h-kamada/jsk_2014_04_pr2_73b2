@@ -10,14 +10,14 @@
 (ros::roseus "leap_listener")
 
 (defclass string-cb-class
-    :super propertied-object
+  :super propertied-object
   :slots (prev-time update-freq av-queue time-queue))
 (defmethod string-cb-class
     (:init ()
      (ros::subscribe "leapmotion/data" jsk_2014_04_pr2_73b2::leapros #'send self :string-cb)
      (setq prev-time (ros::time-now))
      (setq update-freq 500) ;; 1000/500 Hz
-     (setq av-queue nil)
+     (setq av-queue (list #f(0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)))
      (setq time-queue (list (ros::time-now)))
      )
                                         ; kokomade
@@ -158,14 +158,16 @@
                     (send *pr2* arm :inverse-kinematics (make-cascoords :pos det_pos) :revert-if-fail nil :stop 10 :rotation-axis axis_pose) 
                     )
                 )
-              (push (send *pr2* :angle-vector) av-queue)
-              (push (ros::time-now) time-queue)
-              (when (> (send (ros::time- (ros::time-now) prev-time) :sec) (/ update-freq 1000))
+	      (ros::ros-info "diff-norm: ~A" (norm (v- (send *pr2* :angle-vector) (car av-queue))))
+	      (when (> (norm (v- (send *pr2* :angle-vector) (car av-queue))) 1.0)
+		(push (send *pr2* :angle-vector) av-queue)
+		(push (ros::time-now) time-queue))
+              (when (and (> (send (ros::time- (ros::time-now) prev-time) :sec) (/ update-freq 1000)) (> (length time-queue) 2))
                 (nreverse av-queue)
                 (nreverse time-queue)
                 (let (tms)
                   (dotimes (i (1- (length time-queue)))
-                    (push (* (send (ros::time- (elt time-queue (1+ i)) (elt time-queue i)) :sec) 1000) tms))
+                    (push (/ (send (ros::time- (elt time-queue (1+ i)) (elt time-queue i)) :to-nsec) 1000000) tms))
                   (send *ri* :angle-vector-sequence av-queue tms))
                 (setq av-queue (list (send *pr2* :angle-vector)))
                 (setq time-queue (list (ros::time-now)))
@@ -201,6 +203,7 @@
   (setq *pr2* *nao*)
   (setq *ri* (instance nao-interface :init))
   (send *ri* :servo-on)
+  (send *ri* :wait-interpolation)
   (setq robot_scaler 0.3)
   (setq robot_h 0)
   (setq axis_pose nil)
