@@ -1,4 +1,7 @@
+#!/usr/bin/env roseus
+
 (ros::load-ros-manifest "roseus")
+(ros::load-ros-manifest "jsk_gui_msgs")
 (ros::roseus "throw_garbage")
 
 (setq cbox_x 0)
@@ -14,6 +17,7 @@
 
 (setq receive-coord nil)
 
+(setq moerugomi nil)
 
 (setq throw-pose-a
       #f(50.0 4.41354 52.7406 55.3782 -103.724 -11.1028 -97.7521 -14.088 -5.20232 70.2236 -105.26 -89.532 69.9914 -5.72958 19.9806 0.0 30.0))
@@ -29,6 +33,7 @@
 (defun main()
   (while (ros::ok)
     (get_garbage)
+    ;(ask_question)
     (go_trashbox)
     (throw_garbage)
     )
@@ -49,11 +54,31 @@
 	(setq cbox_y (send *objects* :pose :position :y))
 	(setq cbox_z (send *objects* :pose :position :z))
 	(setq saw_checkerbox t)
+	(print 'checkerbox_cb_called_inside)
 	)
     )
   (print 'checkerbox_cb_called)
   )
 
+(defun ask_question_cb (msg)
+  (let ((candidate-list (send msg :texts)))
+    (format t "received message: ~A~%" candidate-list)
+    (when (find-if #'(lambda (candidate) (substringp "はい" candidate)) candidate-list)
+      (setq moerugomi t)
+      (speak-jp "わかりました")))
+  (print moerugomi))
+
+(defun ask_question()
+  (speak-jp "燃えるゴミですか?")
+  (ros::subscribe "/Tablet/voice" jsk_gui_msgs::VoiceMessage #'ask_question_cb)
+  (ros::ros-info "Waiting for tablet...")
+  (setq time_a 0)
+  (while (< (- (car (unix:ptimes)) time_a) 1000)
+    (ros::spin-once))
+  )
+    
+
+    
 (defun get_garbage()
   (ros::subscribe "/joint_states" sensor_msgs::JointState #'get_garbage_cb)
   (setq get_finished nil)
@@ -68,7 +93,7 @@
 	   (setq time_g (car (unix:ptimes)))
 	   )
 	  ((and (eq grasped t) (> grasp-force -10.0f)) ;;open clip if failed to grasp firmly
-					;(speak-jp "やり直してください")
+	   (speak-jp "やり直してください")
 	   (send *ri* :stop-grasp :larm)
 	   (setq grasped nil)
 	   )
@@ -76,16 +101,16 @@
 	   (send *ri* :stop-grasp :larm)
 	   (setq grasped nil)
 	   )
-	  ((and (eq grasped t) (> (- (car (unix:ptimes)) time_g) 800));; go to throw garbage
-	  (setq get_finished t)
-	  (speak-jp "移動します")
-	  (setq receive-coord (send *ri* :state :worldcoords))
-	  (send *ri* :angle-vector throw-pose-a 2000)
-	  (send *ri* :wait-interpolation)
-	  ))))
-
+	  ((and (eq grasped t) (> (- (car (unix:ptimes)) time_g) 600));; good to move
+	   (setq get_finished t)
+	   )))
+  )
 
 (defun go_trashbox()
+  (speak-jp "移動します")
+  (setq receive-coord (send *ri* :state :worldcoords))
+  (send *ri* :angle-vector throw-pose-a 2000)
+  (send *ri* :wait-interpolation)
   (move-to-spot "/eng2/7f/room73B2-trashbox-front")
   (send *ri* :angle-vector throw-pose-a 2000)
   (send *ri* :wait-interpolation)
@@ -93,6 +118,7 @@
 
 (defun throw_garbage()
   (ros::subscribe "/checkerdetector/ObjectDetection" posedetection_msgs::ObjectDetection  #'checkerbox_cb)
+  (speak-jp "ゴミ箱を探します")
   (while (eq saw_checkerbox nil)
     (ros::spin-once)
     )
@@ -111,15 +137,17 @@
   
   (send *ri* :stop-grasp :larm)
   (unix:sleep 3)
-  (send *ri* :angle-vector throw-pose-a 6000)
+  (send *ri* :angle-vector throw-pose-b 4000)
+  (send *ri* :wait-interpolation)
+  (send *ri* :angle-vector throw-pose-a 3000)
   (send *ri* :wait-interpolation)
   )
 
 
 (defun adjust_pose()
-  (setq diff_z (- cbox_y 0.7))
-  (format t "x: ~A  y: ~A" diff_z (- cbox_x))
-  (send *ri* :go-pos (if (> diff_z 0) diff_z (- diff_z))
+  (setq diff_z (- cbox_z 0.7))
+  (format t "~a ~10,3f ~a ~10,3f ~%" "diff_z=" diff_z "-cbox_x=" (- cbox_x))
+  (send *ri* :go-pos-unsafe (if (> diff_z 0) diff_z (- diff_z))
 	(- cbox_x) 
 	0.0)
   )
@@ -129,7 +157,7 @@
 
   (send *ri* :start-grasp)
   (pr2-tuckarm-pose :larm)
-  (send *ri* :angle-vector throw-pose-a 1000)
+  (send *ri* :angle-vector throw-pose-a 1500)
   (send *ri* :wait-interpolation)
   (send *pr2* :larm :collar-y :joint-angle -24)
   (send *pr2* :larm :shoulder-p :joint-angle 25)
