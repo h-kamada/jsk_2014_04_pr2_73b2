@@ -11,8 +11,15 @@
   <depend package="pr2eus"/>
   <depend package="jsk_perception"/>
   <depend package="jsk_demo_common"/>
-  <depend package="jsk_gui_msgs" />
-
+  <depend package="jsk_gui_msgs" /> 
+  <depend package="sensor_msgs" />
+  <depend package="geometry_msgs" />
+  <depend package="opencv2" />
+  <depend package="cv_bridge" />
+  <depend package="roscpp" />
+  <depend package="rospy" />
+  <depend package="std_msgs" />
+  <depend package="image_transport" />
 </package>
 
 
