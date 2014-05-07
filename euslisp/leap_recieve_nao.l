@@ -18,6 +18,7 @@
      (setq prev-time (ros::time-now))
      (setq update-freq 500) ;; 1000/500 Hz
      (setq av-queue nil)
+     (setq time-queue (list (ros::time-now)))
      )
                                         ; kokomade
                                         ;date ->direction nanikak
@@ -46,7 +47,7 @@
                        )
                 )
 
-              (format t "get data\n")
+              (format t "get data~%")
               (setq avoid_point nil)
 
 
@@ -164,7 +165,7 @@
                 (nreverse time-queue)
                 (let (tms)
                   (dotimes (i (1- (length time-queue)))
-                    (push (send (ros::time- (elt time-queue (1+ i)) (elt time-queue i)) :sec) tms))
+                    (push (* (send (ros::time- (elt time-queue (1+ i)) (elt time-queue i)) :sec) 1000) tms))
                   (send *ri* :angle-vector-sequence av-queue tms))
                 (setq av-queue (list (send *pr2* :angle-vector)))
                 (setq time-queue (list (ros::time-now)))
