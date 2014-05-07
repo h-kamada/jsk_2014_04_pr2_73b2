@@ -99,7 +99,7 @@
       
 
       (send *pr2* :inverse-kinematics 
-	    (send (copy-object cds) :translate #f(-400 100 -100) :world) ;;cdsのx y zの値はどう取り出すのか
+	    (send (copy-object cds) :translate #f(-400 -100 -330) :world) ;;cdsのx y zの値はどう取り出すのか
 	    ;;(copy-object cds)
 	    :rotation-axis nil
 	    :use-torso t
