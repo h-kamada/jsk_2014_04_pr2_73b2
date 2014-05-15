@@ -1,0 +1,5 @@
+<launch>
+  <group ns="/wide_stereo/right">
+    <include file="$(find roseus_tutorials)/launch/face-detector-mono.launch"/>
+  </group>
+</launch>
