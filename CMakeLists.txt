@@ -31,3 +31,4 @@ rosbuild_genmsg()
 
 rosbuild_add_executable(image_tracker src/semi_tracker.cpp)
 rosbuild_add_executable(pos_from_camera src/depth_of_color.cpp)
+rosbuild_add_executable(semi_tracker src/semi_tracker.cpp)
