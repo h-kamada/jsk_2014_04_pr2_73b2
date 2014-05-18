@@ -32,9 +32,9 @@
 
 (defun main()
   (while (ros::ok)
-    ;(get_garbage)
+    (get_garbage)
     ;(ask_question)
-    ;(go_trashbox)
+    (go_trashbox)
     (throw_garbage)
     )
   )
