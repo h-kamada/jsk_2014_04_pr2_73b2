@@ -1,0 +1,6 @@
+<launch>
+  <node name="sender_palm" pkg="jsk_2014_04_pr2_73b2" type="sender_palm.py" output="screen"/>
+  <node name="leap_robot" pkg="roseus" type="roseus"
+	args="$(find jsk_2014_04_pr2_73b2)/euslisp/leap_recieve_nao.l &quot;(progn (pr2-start) (unix:sleep 1) (ros::exit) (exit))&quot;" output="screen"/>
+
+</launch>

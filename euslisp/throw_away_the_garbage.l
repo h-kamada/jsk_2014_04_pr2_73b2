@@ -1,0 +1,7 @@
+(defun throw-away-garbage ()
+  (warn "throw-away-garbage~%")
+  (send *ri* :stop-grasp)
+  (send *ri* :go-pos -0.04 0 0) 
+  (send *pr2* :reset-pose)
+  (send *ri* :angle-vector (send *pr2* :angle-vector) 2000)
+  (send *ri* :wait-interpolation))
