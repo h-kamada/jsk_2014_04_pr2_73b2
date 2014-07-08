@@ -1,5 +1,6 @@
 <launch>
-  <group ns="/openni/rgb">
+  <arg name="camera" default="/openni/rgb" />
+  <group ns="$(arg camera)">
     <include file="face-detector-mono-withoutdisp.launch"/>
   </group>
 </launch>
