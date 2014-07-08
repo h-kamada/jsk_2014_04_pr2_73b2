@@ -1,0 +1,5 @@
+<launch>
+  <group ns="/openni/rgb">
+    <include file="face-detector-mono-withoutdisp.launch"/>
+  </group>
+</launch>
