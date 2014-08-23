@@ -97,6 +97,7 @@
 ;;   (ros::ros-info "nao_recieve")
    (ros::sleep)
    )
+)
   ;; (setq look-lr 0.0)
   ;; (setq look-ud 0.0)
   
