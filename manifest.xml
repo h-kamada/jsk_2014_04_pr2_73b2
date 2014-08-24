@@ -20,6 +20,7 @@
   <depend package="rospy" />
   <depend package="std_msgs" />
   <depend package="image_transport" />
+  <depend package="face_detector_mono" />
 </package>
 
 
