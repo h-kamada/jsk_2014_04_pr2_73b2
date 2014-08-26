@@ -21,14 +21,16 @@ using namespace cv;
 typedef struct TP{
   TP(){
   }
-  TP(cv::Mat temp, cv::Ptr<cv::FeatureDetector> detector,cv::Ptr<cv::DescriptorExtractor> extractor){
+  TP(cv::Mat temp, cv::Ptr<cv::FeatureDetector> detector,cv::Ptr<cv::DescriptorExtractor> extractor, const char *_name){
     img = temp;
     detector->detect(img, keypoint);
     extractor->compute(img, keypoint, descriptor);
+    name=_name;
   }
   cv::Mat img;
   std::vector<cv::KeyPoint> keypoint;
   cv::Mat descriptor;
+  string name;
 } template_data;
 
 class Learner_Class{
@@ -139,6 +141,7 @@ public:
       a.y = (scene_corners[1].y + scene_corners[3].y)/2; 
       a.height=480; a.width=640;
       msg.rects.push_back(a);
+      msg.header.frame_id = pt->name;
      }
 
     point_pub.publish(msg);
@@ -151,12 +154,11 @@ public:
     if(start_flag){
       cv::Mat cut_img(tmp_img, cv::Rect(160, 120, 320,240));
 
-      //      template_imgs.push_back(template_data(cut_img, detector, extractor));
       
       cv::Mat dst_img;
       cv::resize(cut_img, dst_img, cv::Size(), 0.5, 0.5);
-      template_imgs.push_back(template_data(dst_img, detector, extractor));
-
+      template_imgs.push_back(template_data(dst_img, detector, extractor, st.data.c_str()));
+      
       ROS_INFO("regist was finished");
     }
   }
