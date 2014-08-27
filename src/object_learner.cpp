@@ -71,6 +71,7 @@ public:
     cv::imshow("result", red_img);
     int count=0;
     detector->detect(tmp_img, keypoint_img);
+    if(keypoint_img.size()<=3) return;
     extractor->compute(tmp_img, keypoint_img, descriptor_img);
     face_detector_mono::RectArray msg;
     for (std::vector<template_data>::iterator pt = template_imgs.begin(); pt != template_imgs.end(); pt++){
@@ -158,7 +159,7 @@ public:
       cv::Mat dst_img;
       cv::resize(cut_img, dst_img, cv::Size(), 0.5, 0.5);
       template_imgs.push_back(template_data(dst_img, detector, extractor, st.data.c_str()));
-      
+     
       ROS_INFO("regist was finished");
     }
   }
