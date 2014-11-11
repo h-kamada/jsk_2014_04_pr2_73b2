@@ -18,7 +18,6 @@
   <arg name="nao_port" default="$(optenv NAO_PORT 9559)" />
   <arg name="camera" default="false" />
  
-  <!-- <node name="acchimuite_voice" pkg="jsk_2014_04_pr2_73b2" type="acchimuite_hoi_voice.py" args="$(arg nao_ip)" /> -->
   <node pkg="nao_driver" type="nao_walker.py" name="nao_walker" required="true" args="--pip=$(arg nao_ip) --pport=$(arg nao_port)" output="screen"/>
   <node pkg="nao_driver" type="nao_sensors.py" name="nao_sensors" required="true" args="--pip=$(arg nao_ip) --pport=$(arg nao_port)" output="screen"/>
   <node pkg="nao_driver" type="nao_controller.py" name="nao_controller" required="true" args="--pip=$(arg nao_ip) --pport=$(arg nao_port)" output="screen"/>
@@ -26,9 +25,17 @@
   <node pkg="nao_driver" type="nao_tactile.py" name="nao_tactile" required="true" args="--pip=$(arg nao_ip) --pport=$(arg nao_port)" output="screen"/>
   <group ns="nao_camera">
     <include if = "$(arg camera)"
-	     file="/home/kochigami/ros/groovy/humanoid_stacks/nao_robot/nao_driver/launch/nao_camera.launch">
-           <arg name="nao_ip" value="$(arg nao_ip)"/>
-    </include>
+	     file="$(find humanoid_stacks)/nao_robot/nao_driver/launch/nao_camera.launch"> 
+      <arg name="nao_ip" value="$(arg nao_ip)"/> 
+    </include> 
     <!-- <node pkg="image_proc" type="image_proc" name="image_proc" repawn="true" /> -->
-  </group>
+  </group> 
+
+ 
+<!-- <include if = "$(arg camera)"
+	     file="$(find nao_sensors)/launch/camera.launch"> -->
+ <!--  <arg name="nao_ip" value="$(arg nao_ip)"/> -->
+<!--  </include> -->
+
+
 </launch>
